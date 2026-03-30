@@ -1,0 +1,103 @@
+---
+description: Spec-bot workflow — read product context and follow the pipeline from planning through implementation to QA
+globs: 
+alwaysApply: true
+---
+
+# Spec-bot workflow
+
+This project uses **spec-bot**. The AI agent should read the context below and follow the workflow. Planning, specs, features, tasks, and tests are done by the AI using the commands and docs in this folder — not by the CLI.
+
+## Project state (read these first)
+
+- **State file:** `spec-bot/state.json` — phase, product idea, features, tasks, test results. Create or update as you work.
+- **Summary:** `spec-bot/context.md` — short summary; update when you change state so new chats stay in sync.
+
+When starting a new chat, read these files so you are context-aware and work can resume.
+
+## Product context (read before planning or implementing)
+
+- **Mission and goals:** `spec-bot/product/mission.md`
+- **Roadmap (MVP and later):** `spec-bot/product/roadmap.md`
+- **Tech stack:** `spec-bot/product/tech-stack.md`
+
+When planning or implementing, read these so suggestions align with the product.
+
+## Phases
+
+The `phase` field in `state.json` tracks where the project is. Valid phases in order:
+
+| Phase | Meaning | Set by |
+|-------|---------|--------|
+| `planning` | Product docs being created | /plan-product |
+| `features` | Features defined | /feature-breakdown |
+| `tasks` | Tasks generated for features | /store-task |
+| `implementing` | Project scaffolded, tasks being built | /scaffold-project, /implement-task |
+| `qa` | Implementation complete, testing/validating | /test-task, /validate-project |
+| `done` | All tasks verified, project complete | /validate-project |
+
+Phases move forward. A command can set the phase forward but should never move it backward.
+
+## Commands
+
+| Command | Purpose |
+|---------|---------|
+| **/start-spec-bot** | Entry point — detects current phase and suggests next step |
+| **/plan-product** | Define mission, roadmap, tech stack |
+| **/shape-spec** | Create a detailed spec for a feature |
+| **/feature-breakdown** | Convert product idea into features |
+| **/store-task** | Auto-generate tasks for all features |
+| **/scaffold-project** | Generate initial project structure from tech stack |
+| **/list-tasks** | Show tasks with progress dashboard |
+| **/implement-task** | Implement a single task (auto-selects next pending) |
+| **/implement-all** | Implement all pending tasks autonomously |
+| **/test-task** | Run and verify tests for a task |
+| **/validate-project** | End-to-end validation of the full project |
+| **/inject-standards** | Add relevant standards to context |
+| **/discover-standards** | Extract codebase patterns into standards |
+| **/index-standards** | Rebuild the standards index |
+
+## Prerequisites (dependency chain)
+
+Each command requires certain prior steps. **Check prerequisites before running.**
+
+| Command | Requires |
+|---------|----------|
+| /plan-product | (none — this is the starting point) |
+| /feature-breakdown | Product docs exist (`mission.md`, `roadmap.md`) |
+| /store-task | Features exist in `state.json` |
+| /scaffold-project | Tech stack defined in `tech-stack.md` |
+| /implement-task | Tasks exist in `state.json`, project scaffold exists |
+| /implement-all | Tasks exist in `state.json`, project scaffold exists |
+| /test-task | At least one task with status `"done"` |
+| /validate-project | At least one task with status `"done"` or `"verified"` |
+
+If a prerequisite is missing, tell the user which command to run first.
+
+## Workflow (recommended order)
+
+1. **/plan-product** — Capture product idea, create mission/roadmap/tech-stack docs.
+2. **/feature-breakdown** — Convert product idea into features; record in state.
+3. **/store-task** — Auto-generate tasks for every feature with acceptance criteria and test cases.
+4. **/scaffold-project** — Generate initial project structure (directories, configs, dependencies).
+5. **/implement-all** (or **/implement-task** one at a time) — Build each task: tests first, then code.
+6. **/test-task** / **/validate-project** — Verify everything works end-to-end.
+
+## Implementation rules
+
+When implementing tasks:
+
+- **Read `tech-stack.md` first** — use the correct framework, test library, and conventions.
+- **Read relevant standards** — check `spec-bot/standards/` for patterns to follow.
+- **Read existing code** — scan the codebase before writing to follow established patterns.
+- **Tests first** — write tests from the task's `testCases`, then implement code to pass them.
+- **Fix failures** — if tests fail, analyze and fix (up to 3 retries) before moving on.
+
+## Specs and plans
+
+- **Specs folder:** `spec-bot/specs/` — each spec has `plan.md`, `shape.md`, `standards.md`, `references.md`.
+- Use **/shape-spec** to create detailed specs for complex features.
+
+## SDLC-style roles
+
+Apply when relevant: Designer, Developer, QA, Solution Architect, Project Manager.

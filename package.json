@@ -1,0 +1,49 @@
+{
+  "name": "spec-bot",
+  "version": "0.4.0",
+  "description": "CLI that generates context-aware workflow folders for AI-assisted development (Cursor, Claude, etc.)",
+  "type": "module",
+  "main": "dist/cli.js",
+  "bin": {
+    "spec-bot": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/cli.js",
+    "dev": "tsc && node dist/cli.js",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "cli",
+    "agent",
+    "workflow",
+    "spec",
+    "cursor",
+    "claude",
+    "ai"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "dependencies": {
+    "@inquirer/prompts": "^7.0.0",
+    "commander": "^12.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/waleedahmad-dev/spec-bot.git"
+  },
+  "homepage": "https://github.com/waleedahmad-dev/spec-bot#readme",
+  "bugs": {
+    "url": "https://github.com/waleedahmad-dev/spec-bot/issues"
+  }
+}
